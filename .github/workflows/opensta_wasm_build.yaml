@@ -1,4 +1,4 @@
-name: Build OpenSTA WebAssembly
+name: Build OpenSTA WebAssembly test
 
 on:
   push:
