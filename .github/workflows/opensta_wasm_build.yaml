@@ -1,0 +1,53 @@
+name: Build OpenSTA WebAssembly
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout OpenSTA Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Emscripten SDK
+        uses: mymindstorm/setup-emsdk@v13
+        with:
+          version: '3.1.56'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build bison flex gawk
+
+      - name: Verify Working Directory & CMakeLists.txt
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -la
+
+      - name: Configure CMake with Emscripten
+        run: |
+          emcmake cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_WASM=ON \
+            -DCMAKE_CXX_FLAGS="-s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s MODULARIZE=1 -s EXPORT_NAME='OpenSTA'"
+
+      - name: Build WebAssembly Module
+        run: |
+          cmake --build build --config Release
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: opensta-wasm-dist
+          path: |
+            build/*.js
+            build/*.wasm
