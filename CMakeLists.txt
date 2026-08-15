@@ -405,8 +405,13 @@ endif()
 include(FindZLIB)
 
 find_package(Threads)
+if(ENABLE_WASM)
+  # For WASM builds, Eigen3 might not be needed or can be header-only
+  find_package(Eigen3 QUIET)
+else()
+  find_package(Eigen3 REQUIRED)
+endif()
 
-find_package(Eigen3 REQUIRED)
 
 # See if std::format is available and if nor install fmt.
 include(CheckCXXSourceCompiles)
