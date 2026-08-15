@@ -41,6 +41,7 @@ jobs:
           emcmake cmake -S . -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DENABLE_WASM=ON \
+            -DBUILD_TESTING=OFF \
             -DCMAKE_CXX_FLAGS="-s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s MODULARIZE=1 -s EXPORT_NAME='OpenSTA'"
 
       - name: Build WebAssembly Module
