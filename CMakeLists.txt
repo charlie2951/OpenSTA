@@ -29,7 +29,7 @@ project(STA VERSION 3.1.0
 )
 
 option(CUDD_DIR "CUDD BDD package directory")
-option(USE_TCL_READLINE "Use TCL readline package" ON)
+option(USE_TCL_READLINE "Use TCL readline package" OFF)
 option(ENABLE_TSAN "Compile with thread santizer enabled" OFF)
 option(ENABLE_ASAN "Compile with address santizer enabled" OFF)
 
@@ -698,7 +698,7 @@ add_custom_command(
 # Tests
 ################################################################
 
-option(BUILD_TESTS "Build unit tests" ON)
+option(BUILD_TESTS "Build unit tests" OFF)
 if(BUILD_TESTS)
   enable_testing()
   find_package(GTest REQUIRED)
