@@ -26,12 +26,15 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build bison flex gawk
-
-      - name: Verify Working Directory & CMakeLists.txt
-        run: |
-          echo "Current directory: $(pwd)"
-          ls -la
+          sudo apt-get install -y \
+            cmake \
+            ninja-build \
+            bison \
+            flex \
+            gawk \
+            eigen3-devel || sudo apt-get install -y libeigen3-dev \
+            zlib1g-dev \
+            tcl-dev
 
       - name: Configure CMake with Emscripten
         run: |
